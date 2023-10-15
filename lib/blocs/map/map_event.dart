@@ -11,3 +11,6 @@ class InitializeMapEvent extends MapEvent {
   final GoogleMapController controller;
   const InitializeMapEvent({required this.controller});
 }
+
+class StartFollowingUserMapEvent extends MapEvent {}
+class StopFollowingUserMapEvent extends MapEvent {}

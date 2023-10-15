@@ -7,7 +7,7 @@ class MapState extends Equatable {
 
   const MapState({
     this.isMapInitialized = false,
-    this.isFollowingUser = false,
+    this.isFollowingUser = true,
   });
 
   @override
