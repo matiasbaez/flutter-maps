@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:maps/screens/screens.dart';
+
 void main() => runApp(const MapsApp());
 
 class MapsApp extends StatelessWidget {
@@ -8,14 +10,10 @@ class MapsApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Maps',
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Container(
-          child: const Center(child: Text('Map')),
-        ),
-      ),
+      home: LoadingScreen(),
     );
   }
 }
