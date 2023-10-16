@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:maps/blocs/blocs.dart';
 
-class BtnFollowUserWidget extends StatelessWidget {
+class BtnTogglePolylines extends StatelessWidget {
 
-  const BtnFollowUserWidget({ Key? key }) : super(key: key);
+  const BtnTogglePolylines({ Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +21,11 @@ class BtnFollowUserWidget extends StatelessWidget {
         child: BlocBuilder<MapBloc, MapState>(
           builder: (context, state) {
             return IconButton(
-                  icon: Icon( state.isFollowingUser ? Icons.directions_run_rounded : Icons.hail_rounded ),
-                  onPressed: () {
-                    state.isFollowingUser
-                      ? mapBloc.add(StopFollowingUserMapEvent())
-                      : mapBloc.add(StartFollowingUserMapEvent());
-                  },
-                );
+              icon: Icon( state.showPolylines ? Icons.visibility_off : Icons.visibility ),
+              onPressed: () {
+                mapBloc.add(ToggleMapPolylines());
+              },
+            );
           },
         ),
       ),

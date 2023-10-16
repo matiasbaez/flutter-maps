@@ -19,3 +19,5 @@ class UpdateUserMapPolylinesEvent extends MapEvent {
   final List<LatLng> locationHistory;
   const UpdateUserMapPolylinesEvent({ required this.locationHistory });
 }
+
+class ToggleMapPolylines extends MapEvent {}
