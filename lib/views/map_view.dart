@@ -8,10 +8,12 @@ import 'package:maps/blocs/blocs.dart';
 class MapView extends StatelessWidget {
 
   final LatLng initiLocation;
+  final Set<Polyline> polylines;
 
   const MapView({
     Key? key,
-    required this.initiLocation
+    required this.initiLocation,
+    required this.polylines
   }) : super(key: key);
 
   @override
@@ -35,12 +37,14 @@ class MapView extends StatelessWidget {
         child: GoogleMap(
           initialCameraPosition: initialCameraPosition,
           zoomControlsEnabled: false,
-          myLocationButtonEnabled: true,
+          myLocationButtonEnabled: false,
           myLocationEnabled: true,
 
           onMapCreated: (GoogleMapController controller) {
             mapBloc.add(InitializeMapEvent(controller: controller));
           },
+
+          polylines: polylines,
         ),
       ),
     );
