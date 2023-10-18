@@ -1,20 +1,54 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:maps/blocs/blocs.dart';
 
 import 'package:maps/delegates/delegates.dart';
+import 'package:maps/models/models.dart';
 
 class SearchBarWidget extends StatelessWidget {
+
   const SearchBarWidget({ Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (context, state) {
+        return !state.displayManualMarker
+          ? FadeInDown(
+            duration: const Duration(milliseconds: 300),
+            child: const _SearchBarBody()
+          )
+          : const SizedBox();
+      },
+    );
+  }
+}
+
+class _SearchBarBody extends StatelessWidget {
+
+  const _SearchBarBody({ Key? key }) : super(key: key);
+
+  void onSearchResults(BuildContext context, SearchResult result) {
+    final searchBloc = BlocProvider.of<SearchBloc>(context);
+    searchBloc.add(ActivateManualMarkerEvent());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
     return SafeArea(
       child: Container(
         margin: const EdgeInsets.only( top: 10 ),
         padding: const EdgeInsets.symmetric( horizontal: 30 ),
         width: double.infinity,
         child: GestureDetector(
-          onTap: () {
-            showSearch(context: context, delegate: SearchDestinationDelegate());
+          onTap: () async {
+            final result = await showSearch<SearchResult>(context: context, delegate: SearchDestinationDelegate());
+            if (result == null) return;
+            if (!context.mounted) return; // To fix "Don't use 'BuildContext's across async gaps."
+
+            onSearchResults(context, result);
           },
           child: Container(
             padding: const EdgeInsets.symmetric( horizontal: 20, vertical: 13 ),

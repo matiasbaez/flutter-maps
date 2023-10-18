@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
 
-class SearchDestinationDelegate extends SearchDelegate {
+import 'package:maps/models/models.dart';
+
+class SearchDestinationDelegate extends SearchDelegate<SearchResult> {
 
   SearchDestinationDelegate() : super(
     searchFieldLabel: 'Buscar...'
@@ -24,7 +26,8 @@ class SearchDestinationDelegate extends SearchDelegate {
     return IconButton(
       icon: const Icon( Icons.arrow_back_ios ),
       onPressed: () {
-        close(context, null);
+        final result = SearchResult(cancel: true);
+        close(context, result);
       },
     );
   }
@@ -42,7 +45,8 @@ class SearchDestinationDelegate extends SearchDelegate {
           leading: const Icon( Icons.location_on_outlined, color: Colors.black, ),
           title: const Text( 'Colocar la ubicación manualmente', style: TextStyle( color:  Colors.black ) ),
           onTap: () {
-            close(context, null);
+            final result = SearchResult(cancel: false, manual: true);
+            close(context, result);
           },
         )
       ],

@@ -58,6 +58,8 @@ class _MapScreenState extends State<MapScreen> {
                     ),
 
                     const SearchBarWidget(),
+
+                    const ManualMarkerWidget(),
                   ],
                 ),
               );
