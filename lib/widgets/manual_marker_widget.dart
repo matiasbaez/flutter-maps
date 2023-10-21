@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:maps/blocs/blocs.dart';
+import 'package:maps/helpers/helpers.dart';
 
 class ManualMarkerWidget extends StatelessWidget {
 
@@ -29,6 +31,9 @@ class _ManualMarkerBody extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final size = MediaQuery.of(context).size;
+    final mapBloc = BlocProvider.of<MapBloc>(context);
+    final searchBloc = BlocProvider.of<SearchBloc>(context);
+    final locationBloc = BlocProvider.of<LocationBloc>(context);
 
     return SizedBox(
       width: size.width,
@@ -66,7 +71,22 @@ class _ManualMarkerBody extends StatelessWidget {
                 elevation: 0,
                 height: 50,
                 shape: const StadiumBorder(),
-                onPressed: () {
+                onPressed: () async {
+
+                  final start = locationBloc.state.lastKnownLocation;
+                  if ( start == null ) return;
+
+                  final end = mapBloc.mapCenter;
+                  if ( end == null ) return;
+
+                  // TODO: Implement loader
+                  // showLoadingMessage(context);
+                  searchBloc.add( DeactivateManualMarkerEvent() );
+
+                  final destination = await searchBloc.getCoordsStartToEnd(start, end);
+                  await mapBloc.drawPolylineRoute(destination);
+
+                  // Navigator.pop(context);
 
                 },
                 child: const Text( 'Confirmar destino', style: TextStyle( color: Colors.white, fontWeight: FontWeight.w300 ) ),
