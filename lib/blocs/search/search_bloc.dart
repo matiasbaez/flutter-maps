@@ -17,12 +17,13 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     required this.trafficService
   }) : super(const SearchState()) {
 
-    on<ActivateManualMarkerEvent>((event, emit) {
-      emit(state.copyWith( displayManualMarker: true ));
-    });
+    on<ActivateManualMarkerEvent>((event, emit) => emit(state.copyWith( displayManualMarker: true )));
+    on<DeactivateManualMarkerEvent>((event, emit) => emit(state.copyWith( displayManualMarker: false )));
 
-    on<DeactivateManualMarkerEvent>((event, emit) {
-      emit(state.copyWith( displayManualMarker: false ));
+    on<NewPlacesFoundEvent>((event, emit) => emit(state.copyWith( places: event.places )));
+    on<AddToHistoryEvent>((event, emit) {
+      final history = [ event.place, ...state.history ];
+      emit(state.copyWith( history: history ));
     });
 
   }
@@ -44,6 +45,16 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       duration: duration,
       distance: distance
     );
+  }
+
+  Future<List<Feature>> getPlacesByQuery( LatLng proximity, String query ) async {
+
+    final places = await trafficService.getResultsByQuery(proximity, query);
+
+    add( NewPlacesFoundEvent(places: places) );
+
+    return places;
+
   }
 
 }
