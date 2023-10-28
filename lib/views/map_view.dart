@@ -9,11 +9,13 @@ class MapView extends StatelessWidget {
 
   final LatLng initiLocation;
   final Set<Polyline> polylines;
+  final Set<Marker> markers;
 
   const MapView({
     Key? key,
     required this.initiLocation,
-    required this.polylines
+    required this.polylines,
+    required this.markers,
   }) : super(key: key);
 
   @override
@@ -49,6 +51,8 @@ class MapView extends StatelessWidget {
           },
 
           polylines: polylines,
+
+          markers: markers,
         ),
       ),
     );

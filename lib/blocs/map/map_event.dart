@@ -24,6 +24,10 @@ class ToggleMapPolylines extends MapEvent {}
 
 class DisplayCustomRouteEvent extends MapEvent {
   final Map<String, Polyline> polylines;
+  final Map<String, Marker> markers;
 
-  const DisplayCustomRouteEvent({ required this.polylines });
+  const DisplayCustomRouteEvent({
+    required this.polylines,
+    required this.markers,
+  });
 }

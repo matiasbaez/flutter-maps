@@ -32,7 +32,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     on<UpdateUserMapPolylinesEvent>(_updateUserMapPolylines);
 
     on<ToggleMapPolylines>((event, emit) => emit( state.copyWith(showPolylines: !state.showPolylines) ));
-    on<DisplayCustomRouteEvent>((event, emit) => emit( state.copyWith(polylines: event.polylines) ));
+    on<DisplayCustomRouteEvent>((event, emit) => emit( state.copyWith(polylines: event.polylines, markers: event.markers) ));
 
     locationStateSubscription = locationBloc.stream.listen((LocationState locationState) {
       if (locationState.lastKnownLocation != null) {
@@ -92,10 +92,18 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       endCap: Cap.squareCap
     );
 
+    final marker = Marker(
+      markerId: const MarkerId('markers'),
+      position: destination.points.first,
+    );
+
     final currentPolylines = Map<String, Polyline>.from( state.polylines );
     currentPolylines['destination'] = route;
 
-    add( DisplayCustomRouteEvent(polylines: currentPolylines) );
+    final currentMarkers = Map<String, Marker>.from( state.markers );
+    currentMarkers['markers'] = marker;
+
+    add( DisplayCustomRouteEvent( polylines: currentPolylines, markers: currentMarkers ) );
 
     return;
   }

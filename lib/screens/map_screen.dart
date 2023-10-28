@@ -45,9 +45,12 @@ class _MapScreenState extends State<MapScreen> {
             builder: (context, mapState) {
 
               Map<String, Polyline> polylines = Map<String, Polyline>.from(mapState.polylines);
+
               if ( !mapState.showPolylines ) {
                 polylines.removeWhere((key, value) => key == 'route');
               }
+
+              print(mapState.markers);
 
               return SingleChildScrollView(
                 child: Stack(
@@ -55,6 +58,7 @@ class _MapScreenState extends State<MapScreen> {
                     MapView(
                       initiLocation: locationState.lastKnownLocation!,
                       polylines: polylines.values.toSet(),
+                      markers: mapState.markers.values.toSet(),
                     ),
 
                     const SearchBarWidget(),
