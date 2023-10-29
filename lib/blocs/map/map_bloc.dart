@@ -92,14 +92,29 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       endCap: Cap.squareCap
     );
 
+    // Convert meters to kilometers
+    double kms = destination.distance / 1000;
+    kms = (kms * 100).floorToDouble();
+    kms /= 100;
+
+    double tripDuration = (destination.duration / 60).floorToDouble();
+
     final startMarker = Marker(
       markerId: const MarkerId('startMarker'),
       position: destination.points.first,
+      infoWindow: InfoWindow(
+        title: 'Start',
+        snippet: 'Kms: $kms, duration: $tripDuration min',
+      )
     );
 
     final endMarker = Marker(
       markerId: const MarkerId('endMarker'),
       position: destination.points.last,
+      infoWindow: InfoWindow(
+        title: destination.endPlace.text,
+        snippet: destination.endPlace.placeName
+      )
     );
 
     final currentPolylines = Map<String, Polyline>.from( state.polylines );
@@ -110,6 +125,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     currentMarkers['endMarker'] = endMarker;
 
     add( DisplayCustomRouteEvent( polylines: currentPolylines, markers: currentMarkers ) );
+
+    await Future.delayed( const Duration( milliseconds: 300 ) );
+    _mapController?.showMarkerInfoWindow( const MarkerId('startMarker') );
 
     return;
   }
