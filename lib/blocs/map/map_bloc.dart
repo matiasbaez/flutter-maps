@@ -101,17 +101,21 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     double tripDuration = (destination.duration / 60).floorToDouble();
 
     // Custom Markers
-    final startMarkerIcon = await getMarkerAssetImage();
-    final endMarkerIcon = await getNetworkImageMarker();
+    // final startMarkerIcon = await getMarkerAssetImage();
+    // final endMarkerIcon = await getNetworkImageMarker();
+
+    final startMarkerIcon = await getStartCustomMarker( tripDuration.toInt(), 'My location' );
+    final endMarkerIcon = await getEndCustomMarker( kms.toInt(), destination.endPlace.text );
 
     final startMarker = Marker(
       markerId: const MarkerId('startMarker'),
       position: destination.points.first,
       icon: startMarkerIcon,
-      infoWindow: InfoWindow(
-        title: 'Start',
-        snippet: 'Kms: $kms, duration: $tripDuration min',
-      )
+      anchor: const Offset( 0.02, 1 ),
+      // infoWindow: InfoWindow(
+      //   title: 'Start',
+      //   snippet: 'Kms: $kms, duration: $tripDuration min',
+      // )
     );
 
     final endMarker = Marker(
@@ -119,10 +123,10 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       position: destination.points.last,
       icon: endMarkerIcon,
       // anchor: const Offset(0, 0),
-      infoWindow: InfoWindow(
-        title: destination.endPlace.text,
-        snippet: destination.endPlace.placeName
-      )
+      // infoWindow: InfoWindow(
+      //   title: destination.endPlace.text,
+      //   snippet: destination.endPlace.placeName
+      // )
     );
 
     final currentPolylines = Map<String, Polyline>.from( state.polylines );
