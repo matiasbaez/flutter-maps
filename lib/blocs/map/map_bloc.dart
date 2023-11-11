@@ -34,6 +34,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     on<ToggleMapPolylines>((event, emit) => emit( state.copyWith(showPolylines: !state.showPolylines) ));
     on<DisplayCustomRouteEvent>((event, emit) => emit( state.copyWith(polylines: event.polylines, markers: event.markers) ));
+    on<ToggleSheetExpandedEvent>((event, emit) => emit( state.copyWith(sheetExpanded: !state.sheetExpanded) ));
 
     locationStateSubscription = locationBloc.stream.listen((LocationState locationState) {
       if (locationState.lastKnownLocation != null) {

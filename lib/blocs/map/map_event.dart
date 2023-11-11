@@ -31,3 +31,5 @@ class DisplayCustomRouteEvent extends MapEvent {
     required this.markers,
   });
 }
+
+class ToggleSheetExpandedEvent extends MapEvent {}
